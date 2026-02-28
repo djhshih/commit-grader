@@ -76,7 +76,8 @@ discrepancy <- function(x, r) {
 # Setup command line arguments
 
 pr <- arg_parser("Committ grader") |>
-	add_argument("project", help="path to project directory") |>
+	add_argument("--url", help="url to Git repository", default="") |>
+	add_argument("--path", help="path to local repository directory", default="") |>
 	add_argument("--start", help="start date", default=NA) |>
 	add_argument("--end", help="end date", default=NA) |>
 	add_argument("--plot", help="plot output file", default=NA) |>
@@ -84,7 +85,8 @@ pr <- arg_parser("Committ grader") |>
 
 argv <- parse_args(pr);
 
-project.dir <- argv$project;
+repo.url <- argv$url;
+repo.dir <- argv$path;
 start.date <- as.POSIXct(as.Date(argv$start));
 end.date <- as.POSIXct(as.Date(argv$end));
 plot.file <- argv$plot;
@@ -92,8 +94,17 @@ plot.file <- argv$plot;
 
 # Process
 
+if (repo.dir == "" && repo.url == "") {
+	stop("Repository url or path must be specified.")
+}
+
+if (repo.url != "") {
+	system(sprintf("git clone %s %s", repo.url, repo.dir));
+	repo.dir <- sub("\\.git", "", sub(".*/", "", repo.url));
+}
+
 # get git commit log
-commit.log <- system(sprintf("cd %s && git log --format=raw", project.dir), intern=TRUE);
+commit.log <- system(sprintf("cd %s && git log --format=raw", repo.dir), intern=TRUE);
 
 # second last field contains the timestamps
 timestamps <- unlist(lapply(
