@@ -60,3 +60,8 @@ ripley_l_1d <- function(x, rs, ...) {
 	k / 2
 }
 
+discrepancy <- function(x, r) {
+	dr <- diff(c(0, r));
+	sum( (x - r)^2 * dr )
+}
+
