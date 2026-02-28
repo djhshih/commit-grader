@@ -1,9 +1,10 @@
 # Commit grader
 
 Assign a score in [0, 1] to the commit history of a Git repository, by
-comparing your commit timestamps against a Poisson point process.
+comparing the commit timestamps against a Poisson point process
+(i.e. constant commit rate).
 
-A repository with frequent and consistent commits
+A repository with consistent commits will have a score near 1.
 
 ## Requirements
 
