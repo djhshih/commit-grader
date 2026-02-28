@@ -16,7 +16,7 @@ R package dependencies are listed in `requirements-r.txt`.
 
 To evaluate the commit history of a repository at `path/to/repo`,
 
-``
+```
 ./grade.r -p path/to/repo
 ```
 
