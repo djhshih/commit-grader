@@ -77,16 +77,16 @@ discrepancy <- function(x, r) {
 
 pr <- arg_parser("Committ grader") |>
 	add_argument("project", help="path to project directory") |>
-	add_argument("--start", help="start date") |>
-	add_argument("--end", help="end date") |>
-	add_argument("--plot", help="plot output file") |>
+	add_argument("--start", help="start date", default=NA) |>
+	add_argument("--end", help="end date", default=NA) |>
+	add_argument("--plot", help="plot output file", default=NA) |>
 	add_argument("--step", help="integration step size", default=0.01)
 
 argv <- parse_args(pr);
 
 project.dir <- argv$project;
-start.date <- ifelse(is.null(argv$start), NA, as.POSIXct(as.Date(argv$start)));
-end.date <- ifelse(is.null(argv$end), NA, as.POSIXct(as.Date(argv$end)));
+start.date <- as.POSIXct(as.Date(argv$start));
+end.date <- as.POSIXct(as.Date(argv$end));
 plot.file <- argv$plot;
 
 
@@ -121,7 +121,7 @@ au <- discrepancy(0, rs);
 a <- discrepancy(lhat, rs);
 score <- pmax(0, au - a) / au;
 
-if (!is.null(plot.file)) {
+if (!is.na(plot.file)) {
 	qdraw(
 		{
 			par(mar=c(6, 6, 2, 2))
@@ -133,5 +133,5 @@ if (!is.null(plot.file)) {
 	)
 }
 
-message(sprintf('{\n  "commit_score": %f\n}', score))
+cat(sprintf('{\n  "commit_score": %f\n}', score))
 
