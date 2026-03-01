@@ -150,9 +150,9 @@ if (!is.na(plot.file)) {
 }
 
 if (out.format == "raw") {
-	cat(score)
+	cat(score, "\n")
 } else {
 	# JSON format
-	cat(sprintf('{\n  "commit_score": %f\n}', score))
+	cat(sprintf('{\n  "commit_score": %f\n}\n', score))
 }
 
