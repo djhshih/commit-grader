@@ -132,6 +132,10 @@ au <- discrepancy(0, rs);
 a <- discrepancy(lhat, rs);
 score <- pmax(0, au - a) / au;
 
+if (is.nan(score)) {
+	score <- 0;
+}
+
 if (!is.na(plot.file)) {
 	qdraw(
 		{
