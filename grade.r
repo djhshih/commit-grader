@@ -81,7 +81,8 @@ pr <- arg_parser("Committ grader") |>
 	add_argument("--start", help="start date", default=NA) |>
 	add_argument("--end", help="end date", default=NA) |>
 	add_argument("--plot", help="plot output file", default=NA) |>
-	add_argument("--step", help="integration step size", default=0.01)
+	add_argument("--step", help="integration step size", default=0.01) |>
+	add_argument("--format", help="output format", default="json")
 
 argv <- parse_args(pr);
 
@@ -90,7 +91,7 @@ repo.dir <- argv$path;
 start.date <- as.POSIXct(as.Date(argv$start));
 end.date <- as.POSIXct(as.Date(argv$end));
 plot.file <- argv$plot;
-
+out.format <- argv$format;
 
 # Process
 
@@ -148,5 +149,10 @@ if (!is.na(plot.file)) {
 	)
 }
 
-cat(sprintf('{\n  "commit_score": %f\n}', score))
+if (out.format == "raw") {
+	cat(score)
+} else {
+	# JSON format
+	cat(sprintf('{\n  "commit_score": %f\n}', score))
+}
 
