@@ -72,6 +72,13 @@ discrepancy <- function(x, r) {
 	sum( (x - r)^2 * dr )
 }
 
+commit_score <- function(x, rs) {
+	lhat <- ripley_l_1d(x, rs);
+	au <- discrepancy(0, rs);
+	a <- discrepancy(lhat, rs);
+	score <- pmax(0, au - a) / au;
+	score
+}
 
 # Setup command line arguments
 
@@ -128,17 +135,14 @@ times <- times / max(times);
 
 rs <- seq(0, 0.5, step);
 
-lhat <- ripley_l_1d(times, rs)
-
-au <- discrepancy(0, rs);
-a <- discrepancy(lhat, rs);
-score <- pmax(0, au - a) / au;
+score <- commit_score(times, rs);
 
 if (is.nan(score)) {
 	score <- 0;
 }
 
 if (!is.na(plot.file)) {
+	lhat <- ripley_l_1d(times, rs)
 	qdraw(
 		{
 			par(mar=c(6, 6, 2, 2))
