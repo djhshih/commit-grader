@@ -92,6 +92,7 @@ start.date <- as.POSIXct(as.Date(argv$start));
 end.date <- as.POSIXct(as.Date(argv$end));
 plot.file <- argv$plot;
 out.format <- argv$format;
+step <- argv$step;
 
 # Process
 
@@ -125,7 +126,7 @@ if (is.na(end.date)) {
 times <- pmax(0, dates[dates <= end.date] - start.date);
 times <- times / max(times);
 
-rs <- seq(0, 0.5, 0.0001);
+rs <- seq(0, 0.5, step);
 
 lhat <- ripley_l_1d(times, rs)
 
